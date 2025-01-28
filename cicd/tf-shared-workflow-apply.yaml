@@ -121,14 +121,14 @@ steps:
       - |
         terraform plan
 
-  - id: 'Terraform Apply'
-    name: "${_TF_IMAGE}"
-    entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY}"
-    args:
-      - '-c'
-      - |
-        terraform apply -auto-approve
+  # - id: 'Terraform Apply'
+  #   name: "${_TF_IMAGE}"
+  #   entrypoint: 'sh'
+  #   dir: "${_APPLICATION_DIRECTORY}"
+  #   args:
+  #     - '-c'
+  #     - |
+  #       terraform apply -auto-approve
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap"

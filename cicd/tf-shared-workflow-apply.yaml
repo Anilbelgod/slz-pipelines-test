@@ -90,8 +90,9 @@ steps:
       - '-c'
       - |
           terraform apply -auto-approve
-# options:
-#   logging: NONE  # Valid logging setting
+logsBucket: 'gs://bkt-cb-log-bkt'
+options:
+ logging: GCS_ONLY
 
 # substitutions:
 #   _APPLICATION_DIRECTORY: "bootstrap/"

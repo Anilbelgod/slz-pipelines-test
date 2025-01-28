@@ -230,23 +230,15 @@
 
 
 steps:
-   -id: 'tf-plan'
+  - id: 'tf-plan'
     name: 'hashicorp/terraform:1.0.0'
     env:
-        - dir: "${{ matrix._APPLICATION_DIRECTORY_CLOUD_BUCKET}}"
-      # - OS: 'ubuntu-latest'
-
-      # - DB_VERSION: ${{ matrix.db_version }}
-
+      - dir: "${{ matrix._APPLICATION_DIRECTORY_CLOUD_BUCKET }}"
     script:
-
-      - | 
+      - |
         terraform init
-        # Build command using the DB_VERSION variable
-
+        # Uncomment and modify the following line if you need to use the DB_VERSION variable
         # make build DB_VERSION=${DB_VERSION}
-
-
 
 matrix:
   include:

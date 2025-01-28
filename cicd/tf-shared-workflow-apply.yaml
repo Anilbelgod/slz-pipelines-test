@@ -67,7 +67,7 @@ steps:
   - id: 'tf-init'
     name: 'hashicorp/terraform:1.0.0'
     entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY}"
+    dir: "bootstrap"
     args:
       - '-c'
       - |
@@ -76,7 +76,7 @@ steps:
   - id: 'tf-plan'
     name: 'hashicorp/terraform:1.0.0'
     entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY}"
+    dir: "bootstrap"
     args:
       - '-c'
       - |
@@ -85,16 +85,16 @@ steps:
   - id: 'tf-apply'
     name: 'hashicorp/terraform:1.0.0'
     entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY}"
+    dir: "bootstrap"
     args:
       - '-c'
       - |
           terraform apply -auto-approve
-options:
-  logging: NONE  # Valid logging setting
+# options:
+#   logging: NONE  # Valid logging setting
 
-substitutions:
-  _APPLICATION_DIRECTORY: "bootstrap/"
-  _TF_IMAGE: "hashicorp/terraform:1.2.9"
+# substitutions:
+#   _APPLICATION_DIRECTORY: "bootstrap/"
+#   _TF_IMAGE: "hashicorp/terraform:1.2.9"
 
 # timeout: "1200s"

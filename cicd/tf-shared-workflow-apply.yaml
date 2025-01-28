@@ -14,4 +14,4 @@ substitutions:
   _TF_DIRECTORY: "cicd/66slz"
   _APPLICATION_DIRECTORY: "cicd"
   _ENVIRONMENT: "shared"
-  TF_BACKEND_PREFIX: "bkt-b-tfstate-e842"
+  _TF_BACKEND_PREFIX: "bkt-b-tfstate-e842"

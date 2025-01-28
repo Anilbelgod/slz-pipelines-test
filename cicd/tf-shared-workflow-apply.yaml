@@ -154,55 +154,74 @@
 # options:
 #  logging: GCS_ONLY
 
+# steps:
+#   - id: 'Terraform Init Bootstrap'
+#     name: "${_TF_IMAGE}"
+#     entrypoint: 'sh'
+#     dir: "${_APPLICATION_DIRECTORY_BOOTSTRAP}"
+#     args:
+#       - '-c'
+#       - |
+#         echo "working directory is ${_APPLICATION_DIRECTORY_BOOTSTRAP}"
+#         terraform init
+#         echo "working directory is ${_APPLICATION_DIRECTORY_BOOTSTRAP}"
+
+#   - id: 'Terraform Plan Bootstrap'
+#     name: "${_TF_IMAGE}"
+#     entrypoint: 'sh'
+#     dir: "${_APPLICATION_DIRECTORY_BOOTSTRAP}"
+#     args:
+#       - '-c'
+#       - |
+#         terraform plan
+#     waitFor: ['${_WAIT_FOR_INIT_BOOTSTRAP}']
+
+#   - id: 'Terraform Init Cloud Bucket'
+#     name: "${_TF_IMAGE}"
+#     entrypoint: 'sh'
+#     dir: "${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
+#     args:
+#       - '-c'
+#       - |
+#         echo "working directory is ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
+#         terraform init
+#         echo "working directory is ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
+
+#   - id: 'Terraform Plan Cloud Bucket'
+#     name: "${_TF_IMAGE}"
+#     entrypoint: 'sh'
+#     dir: "${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
+#     args:
+#       - '-c'
+#       - |
+#         terraform plan
+#     waitFor: ['${_WAIT_FOR_INIT_CLOUD_BUCKET}']
+
+# substitutions:
+#   _APPLICATION_DIRECTORY_BOOTSTRAP: "bootstrap"
+#   _APPLICATION_DIRECTORY_CLOUD_BUCKET: "cloud-bucket"
+#   _TF_IMAGE: "hashicorp/terraform:1.2.9"
+#   _WAIT_FOR_INIT_BOOTSTRAP: "Terraform Init Bootstrap"
+#   _WAIT_FOR_INIT_CLOUD_BUCKET: "Terraform Init Cloud Bucket"
+
+# logsBucket: 'gs://bkt-cb-log-bkt'
+
+# options:
+#  logging: GCS_ONLY
+
 steps:
-  - id: 'Terraform Init Bootstrap'
+  - id: 'Terraform Init and Plan'
     name: "${_TF_IMAGE}"
     entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY_BOOTSTRAP}"
     args:
       - '-c'
       - |
-        echo "working directory is ${_APPLICATION_DIRECTORY_BOOTSTRAP}"
-        terraform init
-        echo "working directory is ${_APPLICATION_DIRECTORY_BOOTSTRAP}"
-
-  - id: 'Terraform Plan Bootstrap'
-    name: "${_TF_IMAGE}"
-    entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY_BOOTSTRAP}"
-    args:
-      - '-c'
-      - |
-        terraform plan
-    waitFor: ['${_WAIT_FOR_INIT_BOOTSTRAP}']
-
-  - id: 'Terraform Init Cloud Bucket'
-    name: "${_TF_IMAGE}"
-    entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
-    args:
-      - '-c'
-      - |
-        echo "working directory is ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
-        terraform init
-        echo "working directory is ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
-
-  - id: 'Terraform Plan Cloud Bucket'
-    name: "${_TF_IMAGE}"
-    entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
-    args:
-      - '-c'
-      - |
-        terraform plan
-    waitFor: ['${_WAIT_FOR_INIT_CLOUD_BUCKET}']
+        ./terraform-commands.sh ${_APPLICATION_DIRECTORY_BOOTSTRAP} ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}
 
 substitutions:
   _APPLICATION_DIRECTORY_BOOTSTRAP: "bootstrap"
   _APPLICATION_DIRECTORY_CLOUD_BUCKET: "cloud-bucket"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
-  _WAIT_FOR_INIT_BOOTSTRAP: "Terraform Init Bootstrap"
-  _WAIT_FOR_INIT_CLOUD_BUCKET: "Terraform Init Cloud Bucket"
 
 logsBucket: 'gs://bkt-cb-log-bkt'
 

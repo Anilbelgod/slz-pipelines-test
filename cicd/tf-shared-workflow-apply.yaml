@@ -1,0 +1,15 @@
+name: tf-prod-workflow-apply
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud builds submit --config=tf-apply-template.yaml .
+
+substitutions: 
+  _ORG_ROOT: "cicd"
+  _TF_DIRECTORY: "cicd/66slz"
+  _APPLICATION_DIRECTORY: "cicd"
+  _ENVIRONMENT: "shared"
+  _GCS_BUCKET: "bkt-b-tfstate-e842"

@@ -1,0 +1,43 @@
+steps:
+  - id: 'terraform init'
+    name: "hashicorp/terraform:1.2.9"
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+    - '-c'
+    - |
+      #  echo "showing working directory " && \
+      #   && \
+      #  ls
+
+      #  if [[ -z "${{ inputs.bu }}" ]]; then
+      #   TF_BACKEND_PREFIX="${{ inputs.application_directory }}/${{ inputs.environment }}"
+      #  else
+      #   TF_BACKEND_PREFIX="${{ inputs.application_directory }}/${{ inputs.bu }}/${{ inputs.environment }}"
+      #  fi
+      #  echo "Backend Bucket: ${{ inputs.gcs_bucket }}"
+      #  echo "Backend Prefix: $TF_BACKEND_PREFIX"
+
+      terraform init 
+
+
+  - id: 'TF Plan'
+    name: "hashicorp/terraform:1.2.9"
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+    - '-c'
+    - |      
+      varfile=$(for i in `ls -1 | grep tfvars`; do echo "-var-file"=$_ENVIRONMENT/$$i ; done  | xargs)
+      cd ..
+
+      terraform plan -var-file="tfvars/variables.${{ inputs.environment }}.tfvars"
+
+  - id: 'TF Apply'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+    - '-c'
+    - |      
+      terraform apply tf.plan

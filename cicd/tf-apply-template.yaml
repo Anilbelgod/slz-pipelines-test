@@ -27,11 +27,8 @@ steps:
     dir: $_APPLICATION_DIRECTORY
     args:
     - '-c'
-    - |      
-      varfile=$(for i in `ls -1 | grep tfvars`; do echo "-var-file"=$_ENVIRONMENT/$$i ; done  | xargs)
-      cd ..
-
-      terraform plan -var-file="tfvars/variables.${{ inputs.environment }}.tfvars"
+    - |    
+       terraform plan 
 
   - id: 'TF Apply'
     name: $_TF_IMAGE
@@ -40,4 +37,4 @@ steps:
     args:
     - '-c'
     - |      
-      terraform apply tf.plan
+      terraform apply 

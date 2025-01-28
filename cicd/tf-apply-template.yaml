@@ -6,18 +6,6 @@ steps:
     args:
     - '-c'
     - |
-      #  echo "showing working directory " && \
-      #   && \
-      #  ls
-
-      #  if [[ -z "${{ inputs.bu }}" ]]; then
-      #   TF_BACKEND_PREFIX="${{ inputs.application_directory }}/${{ inputs.environment }}"
-      #  else
-      #   TF_BACKEND_PREFIX="${{ inputs.application_directory }}/${{ inputs.bu }}/${{ inputs.environment }}"
-      #  fi
-      #  echo "Backend Bucket: ${{ inputs.gcs_bucket }}"
-      #  echo "Backend Prefix: $TF_BACKEND_PREFIX"
-
       terraform init 
 
 

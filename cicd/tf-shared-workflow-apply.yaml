@@ -9,8 +9,8 @@ steps:
 options:
   logging: CLOUD_LOGGING_ONLY  # Valid logging setting
 
-substitutions: 
-  _ORG_ROOT: "cicd"
-  _TF_DIRECTORY: "cicd/66slz"
-  _APPLICATION_DIRECTORY: "../bootstrap"
-  _ENVIRONMENT: "shared"
+ssubstitutions:
+  _APPLICATION_DIRECTORY: "bootstrap"
+  _TF_IMAGE: "hashicorp/terraform:1.2.9"
+
+timeout: "1200s"

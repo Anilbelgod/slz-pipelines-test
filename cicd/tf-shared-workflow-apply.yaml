@@ -23,7 +23,7 @@ steps:
     args:
       - '-c'
       - |
-        echo "Working directory is $PWD"
+
         terraform init
 
   - id: 'Terraform_Plan'

@@ -252,6 +252,10 @@ steps:
             terraform init
 
             terraform plan -parallelism=5
+logsBucket: 'gs://bkt-cb-log-bkt'
+
+options:
+ logging: GCS_ONLY
 
 
 

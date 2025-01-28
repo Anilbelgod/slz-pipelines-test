@@ -113,6 +113,7 @@ steps:
         echo "working directory is ${_APPLICATION_DIRECTORY}"
 
   - id: 'Terraform Plan'
+    waitFor: ['-']
     name: "hashicorp/terraform:1.2.9"
     entrypoint: 'sh'
     dir: "${_APPLICATION_DIRECTORY}"
@@ -152,6 +153,6 @@ substitutions:
 #   logging: CLOUD_LOGGING_ONLY
 
 logsBucket: 'gs://bkt-cb-log-bkt'
-waitFor: ['-']
+
 options:
  logging: GCS_ONLY

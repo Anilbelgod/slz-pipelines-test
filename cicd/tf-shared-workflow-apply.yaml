@@ -12,5 +12,5 @@ options:
 substitutions: 
   _ORG_ROOT: "cicd"
   _TF_DIRECTORY: "cicd/66slz"
-  _APPLICATION_DIRECTORY: "bootstrap"
+  _APPLICATION_DIRECTORY: "../bootstrap"
   _ENVIRONMENT: "shared"

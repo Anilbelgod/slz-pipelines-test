@@ -16,7 +16,7 @@
 # timeout: "1200s"
 
 steps:
-  - id: 'Terraform Init'
+  - id: 'Terraform_Init'
     name: "hashicorp/terraform:1.2.9"
     entrypoint: 'sh'
     dir: "${_APPLICATION_DIRECTORY}"

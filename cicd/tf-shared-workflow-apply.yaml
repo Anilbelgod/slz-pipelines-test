@@ -17,7 +17,7 @@
 
 steps:
   - id: 'Terraform_Init'
-    name: "hashicorp/terraform:1.2.9"
+    name: "gcr.io/cloud-builders/gcloud"
     entrypoint: 'sh'
     dir: "${_APPLICATION_DIRECTORY}"
     args:
@@ -27,7 +27,7 @@ steps:
         terraform init
 
   - id: 'Terraform_Plan'
-    name: "hashicorp/terraform:1.2.9"
+    name: "gcr.io/cloud-builders/gcloud"
     entrypoint: 'sh'
     dir: "${_APPLICATION_DIRECTORY}"
     args:
@@ -36,7 +36,7 @@ steps:
         terraform plan
 
   - id: 'Terraform_Apply'
-    name: "${_TF_IMAGE}"
+    name: "gcr.io/cloud-builders/gcloud"
     entrypoint: 'sh'
     dir: "${_APPLICATION_DIRECTORY}"
     args:

@@ -6,7 +6,8 @@ steps:
       - '-c'
       - |
         gcloud builds submit --config=tf-apply-template.yaml
-logging: CLOUD_LOGGING_ONLY
+options:
+  logging: CLOUD_LOGGING_ONLY  # Valid logging setting
 
 substitutions: 
   _ORG_ROOT: "cicd"

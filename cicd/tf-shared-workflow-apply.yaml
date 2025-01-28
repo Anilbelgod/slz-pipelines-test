@@ -9,7 +9,7 @@ steps:
 options:
   logging: CLOUD_LOGGING_ONLY  # Valid logging setting
 
-ssubstitutions:
+substitutions:
   _APPLICATION_DIRECTORY: "bootstrap"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
 

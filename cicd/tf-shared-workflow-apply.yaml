@@ -216,7 +216,7 @@ steps:
     args:
       - '-c'
       - |
-        ./terraform-commands.sh ${_APPLICATION_DIRECTORY_BOOTSTRAP} ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}
+        terraform-commands.sh ${_APPLICATION_DIRECTORY_BOOTSTRAP} ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}
 
 substitutions:
   _APPLICATION_DIRECTORY_BOOTSTRAP: "bootstrap"

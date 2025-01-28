@@ -230,10 +230,8 @@
 
 
 steps:
-
-  -id: 'tf-plan'
-   name: 'hashicorp/terraform:1.0.0'
-
+   -id: 'tf-plan'
+    name: 'hashicorp/terraform:1.0.0'
     env:
         - dir: "${{ matrix._APPLICATION_DIRECTORY_CLOUD_BUCKET}}"
       # - OS: 'ubuntu-latest'

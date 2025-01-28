@@ -101,35 +101,47 @@
 # # timeout: "1200s"
 
 steps:
-  - id: 'Terraform Init'
+  - id: 'Terraform Init Bootstrap'
     name: "hashicorp/terraform:1.2.9"
     entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY}"
+    dir: "bootstrap"
     args:
       - '-c'
       - |
-        echo "working directory is ${_APPLICATION_DIRECTORY}"
+        echo "working directory is bootstrap"
         terraform init
-        echo "working directory is ${_APPLICATION_DIRECTORY}"
+        echo "working directory is bootstrap"
 
-  - id: 'Terraform Plan'
-    waitFor: ['-']
+  - id: 'Terraform Plan Bootstrap'
     name: "hashicorp/terraform:1.2.9"
     entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY}"
+    dir: "bootstrap"
     args:
       - '-c'
       - |
         terraform plan
+    waitFor: ['Terraform Init Bootstrap']
 
-  # - id: 'Terraform Apply'
-  #   name: "${_TF_IMAGE}"
-  #   entrypoint: 'sh'
-  #   dir: "${_APPLICATION_DIRECTORY}"
-  #   args:
-  #     - '-c'
-  #     - |
-  #       terraform apply -auto-approve
+  - id: 'Terraform Init Cloud Bucket'
+    name: "hashicorp/terraform:1.2.9"
+    entrypoint: 'sh'
+    dir: "cloud-bucket"
+    args:
+      - '-c'
+      - |
+        echo "working directory is cloud-bucket"
+        terraform init
+        echo "working directory is cloud-bucket"
+
+  - id: 'Terraform Plan Cloud Bucket'
+    name: "hashicorp/terraform:1.2.9"
+    entrypoint: 'sh'
+    dir: "cloud-bucket"
+    args:
+      - '-c'
+      - |
+        terraform plan
+    waitFor: ['Terraform Init Cloud Bucket']
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap"

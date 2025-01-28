@@ -16,8 +16,8 @@
 # timeout: "1200s"
 
 steps:
-  - id: 'Terraform_Init'
-    name: "gcr.io/cloud-builders/gcloud"
+  - id: 'tf init'
+    name: 'hashicorp/terraform:1.2.9'
     entrypoint: 'sh'
     dir: "${_APPLICATION_DIRECTORY}"
     args:
@@ -27,7 +27,7 @@ steps:
         terraform init
 
   - id: 'Terraform_Plan'
-    name: "gcr.io/cloud-builders/gcloud"
+    name: "hashicorp/terraform:1.2.9"
     entrypoint: 'sh'
     dir: "${_APPLICATION_DIRECTORY}"
     args:
@@ -36,7 +36,7 @@ steps:
         terraform plan
 
   - id: 'Terraform_Apply'
-    name: "gcr.io/cloud-builders/gcloud"
+    name: "${_TF_IMAGE}"
     entrypoint: 'sh'
     dir: "${_APPLICATION_DIRECTORY}"
     args:

@@ -209,21 +209,48 @@
 # options:
 #  logging: GCS_ONLY
 
+# steps:
+#   - id: 'Terraform Init and Plan'
+#     name: "${_TF_IMAGE}"
+#     entrypoint: 'sh'
+#     args:
+#       - '-c'
+#       - |
+#         ./tf-commands.sh ${_APPLICATION_DIRECTORY_BOOTSTRAP} ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}
+
+# substitutions:
+#   _APPLICATION_DIRECTORY_BOOTSTRAP: "bootstrap"
+#   _APPLICATION_DIRECTORY_CLOUD_BUCKET: "cloud-bucket"
+#   _TF_IMAGE: "hashicorp/terraform:1.2.9"
+
+# logsBucket: 'gs://bkt-cb-log-bkt'
+
+# options:
+#  logging: GCS_ONLY
+
+
 steps:
-  - id: 'Terraform Init and Plan'
-    name: "${_TF_IMAGE}"
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        cicd/tf-commands.sh ${_APPLICATION_DIRECTORY_BOOTSTRAP} ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}
 
-substitutions:
-  _APPLICATION_DIRECTORY_BOOTSTRAP: "bootstrap"
-  _APPLICATION_DIRECTORY_CLOUD_BUCKET: "cloud-bucket"
-  _TF_IMAGE: "hashicorp/terraform:1.2.9"
+  -id: 'tf-plan'
+   name: 'hashicorp/terraform:1.0.0'
 
-logsBucket: 'gs://bkt-cb-log-bkt'
+    env:
+        - dir: "${{ matrix._APPLICATION_DIRECTORY_CLOUD_BUCKET}}"
+      # - OS: 'ubuntu-latest'
 
-options:
- logging: GCS_ONLY
+      # - DB_VERSION: ${{ matrix.db_version }}
+
+    script:
+
+      - | 
+        terraform init
+        # Build command using the DB_VERSION variable
+
+        # make build DB_VERSION=${DB_VERSION}
+
+
+
+matrix:
+  include:
+    - _APPLICATION_DIRECTORY_CLOUD_BUCKET: 'cloud-bucket'
+

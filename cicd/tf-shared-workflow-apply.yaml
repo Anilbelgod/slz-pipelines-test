@@ -1,13 +1,49 @@
-name: tf-prod-workflow-apply
+# name: tf-prod-workflow-apply
+# steps:
+#   - name: 'gcr.io/cloud-builders/gcloud'
+#     entrypoint: 'bash'
+#     args:
+#       - '-c'
+#       - |
+#         gcloud builds submit --config=cicd/tf-apply-template.yaml
+# options:
+#   logging: CLOUD_LOGGING_ONLY  # Valid logging setting
+
+# substitutions:
+#   _APPLICATION_DIRECTORY: "bootstrap/"
+#   _TF_IMAGE: "hashicorp/terraform:1.2.9"
+
+# timeout: "1200s"
+
 steps:
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
+  - id: 'Terraform Init'
+    name: "hashicorp/terraform:1.2.9"
+    entrypoint: 'sh'
+    dir: "${_APPLICATION_DIRECTORY}"
     args:
       - '-c'
       - |
-        gcloud builds submit --config=cicd/tf-apply-template.yaml
-options:
-  logging: CLOUD_LOGGING_ONLY  # Valid logging setting
+        echo "working directory is ${ dir }"
+        terraform init
+        echo "working directory is ${ dir }"
+
+  - id: 'Terraform Plan'
+    name: "hashicorp/terraform:1.2.9"
+    entrypoint: 'sh'
+    dir: "${_APPLICATION_DIRECTORY}"
+    args:
+      - '-c'
+      - |
+        terraform plan
+
+  - id: 'Terraform Apply'
+    name: "${_TF_IMAGE}"
+    entrypoint: 'sh'
+    dir: "${_APPLICATION_DIRECTORY}"
+    args:
+      - '-c'
+      - |
+        terraform apply -auto-approve
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"

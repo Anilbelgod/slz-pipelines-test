@@ -28,8 +28,4 @@ steps:
       - |
         terraform apply -auto-approve
 
-substitutions:
-  _APPLICATION_DIRECTORY: "path/to/your/application"
-  _TF_IMAGE: "hashicorp/terraform:1.2.9"
 
-timeout: "1200s"

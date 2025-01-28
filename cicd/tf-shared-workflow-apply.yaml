@@ -23,11 +23,10 @@ steps:
     args:
       - '-c'
       - |
-        echo "working directory is ${ dir }"
+        echo "Working directory is $PWD"
         terraform init
-        echo "working directory is ${ dir }"
 
-  - id: 'Terraform Plan'
+  - id: 'Terraform_Plan'
     name: "hashicorp/terraform:1.2.9"
     entrypoint: 'sh'
     dir: "${_APPLICATION_DIRECTORY}"
@@ -36,7 +35,7 @@ steps:
       - |
         terraform plan
 
-  - id: 'Terraform Apply'
+  - id: 'Terraform_Apply'
     name: "${_TF_IMAGE}"
     entrypoint: 'sh'
     dir: "${_APPLICATION_DIRECTORY}"
@@ -44,6 +43,7 @@ steps:
       - '-c'
       - |
         terraform apply -auto-approve
+
 options:
   logging: CLOUD_LOGGING_ONLY  # Valid logging setting
 

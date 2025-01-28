@@ -130,10 +130,13 @@ steps:
       - |
         terraform apply -auto-approve
 
-matrix:
-  include:
-    - _APPLICATION_DIRECTORY: "bootstrap/dev"
-      _TF_IMAGE: "hashicorp/terraform:1.2.9"
+substitutions:
+  _APPLICATION_DIRECTORY: "bootstrap"
+  _TF_IMAGE: "hashicorp/terraform:1.2.9"
+
+  _APPLICATION_DIRECTORY: "cloud-bucket"
+  _TF_IMAGE: "hashicorp/terraform:1.2.9"
+
     # - _APPLICATION_DIRECTORY: "bootstrap/prod"
     #   _TF_IMAGE: "hashicorp/terraform:1.2.9"
     #   _REGION: "us-west1"

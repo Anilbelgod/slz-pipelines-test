@@ -229,20 +229,30 @@
 #  logging: GCS_ONLY
 
 
-steps:
-  - id: 'tf-plan'
-    name: 'hashicorp/terraform:1.0.0'
-    env:
-      dir: "${{ matrix._APPLICATION_DIRECTORY_CLOUD_BUCKET }}"
-    script:
-      - |
-        terraform init
-        # Uncomment and modify the following line if you need to use the DB_VERSION variable
-        # make build DB_VERSION=${DB_VERSION}
+# steps:
+#   - id: 'tf-plan'
+#     name: 'hashicorp/terraform:1.0.0'
+#     env:
+#       dir: "${{ matrix._APPLICATION_DIRECTORY_CLOUD_BUCKET }}"
+#     script:
+#       - |
+#         terraform init
+#         # Uncomment and modify the following line if you need to use the DB_VERSION variable
+#         # make build DB_VERSION=${DB_VERSION}
 
-matrix:
-  include:
-    - _APPLICATION_DIRECTORY_CLOUD_BUCKET: 'cloud-bucket'
+# matrix:
+#   include:
+#     - _APPLICATION_DIRECTORY_CLOUD_BUCKET: 'cloud-bucket'
+
+steps:
+  - name: 'terraform plan'
+
+    script: |
+
+            terraform init
+
+            terraform plan -parallelism=5
+
 
 
 

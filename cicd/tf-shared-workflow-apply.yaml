@@ -99,70 +99,55 @@
 # #   _TF_IMAGE: "hashicorp/terraform:1.2.9"
 
 # # timeout: "1200s"
-
 steps:
   - id: 'Terraform Init Bootstrap'
-    name: "hashicorp/terraform:1.2.9"
+    name: "${_TF_IMAGE}"
     entrypoint: 'sh'
-    dir: "bootstrap"
+    dir: "${_APPLICATION_DIRECTORY_BOOTSTRAP}"
     args:
       - '-c'
       - |
-        echo "working directory is bootstrap"
+        echo "working directory is ${_APPLICATION_DIRECTORY_BOOTSTRAP}"
         terraform init
-        echo "working directory is bootstrap"
+        echo "working directory is ${_APPLICATION_DIRECTORY_BOOTSTRAP}"
 
   - id: 'Terraform Plan Bootstrap'
-    name: "hashicorp/terraform:1.2.9"
+    name: "${_TF_IMAGE}"
     entrypoint: 'sh'
-    dir: "bootstrap"
+    dir: "${_APPLICATION_DIRECTORY_BOOTSTRAP}"
     args:
       - '-c'
       - |
         terraform plan
-    waitFor: ['Terraform Init Bootstrap']
+    waitFor: ['${_WAIT_FOR_INIT_BOOTSTRAP}']
 
   - id: 'Terraform Init Cloud Bucket'
-    name: "hashicorp/terraform:1.2.9"
+    name: "${_TF_IMAGE}"
     entrypoint: 'sh'
-    dir: "cloud-bucket"
+    dir: "${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
     args:
       - '-c'
       - |
-        echo "working directory is cloud-bucket"
+        echo "working directory is ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
         terraform init
-        echo "working directory is cloud-bucket"
+        echo "working directory is ${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
 
   - id: 'Terraform Plan Cloud Bucket'
-    name: "hashicorp/terraform:1.2.9"
+    name: "${_TF_IMAGE}"
     entrypoint: 'sh'
-    dir: "cloud-bucket"
+    dir: "${_APPLICATION_DIRECTORY_CLOUD_BUCKET}"
     args:
       - '-c'
       - |
         terraform plan
-    waitFor: ['Terraform Init Cloud Bucket']
+    waitFor: ['${_WAIT_FOR_INIT_CLOUD_BUCKET}']
 
 substitutions:
-  _APPLICATION_DIRECTORY: "bootstrap"
+  _APPLICATION_DIRECTORY_BOOTSTRAP: "bootstrap"
+  _APPLICATION_DIRECTORY_CLOUD_BUCKET: "cloud-bucket"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
-  
-
-  _APPLICATION_DIRECTORY: "cloud-bucket"
-  _TF_IMAGE: "hashicorp/terraform:1.2.9"
-
-    # - _APPLICATION_DIRECTORY: "bootstrap/prod"
-    #   _TF_IMAGE: "hashicorp/terraform:1.2.9"
-    #   _REGION: "us-west1"
-    #   _ENV: "prod"
-
-# substitutions:
-#   _APPLICATION_DIRECTORY: "bootstrap/"
-#   _TF_IMAGE: "hashicorp/terraform:1.2.9"
-
-# timeout: "1200s"
-# options:
-#   logging: CLOUD_LOGGING_ONLY
+  _WAIT_FOR_INIT_BOOTSTRAP: "Terraform Init Bootstrap"
+  _WAIT_FOR_INIT_CLOUD_BUCKET: "Terraform Init Cloud Bucket"
 
 logsBucket: 'gs://bkt-cb-log-bkt'
 

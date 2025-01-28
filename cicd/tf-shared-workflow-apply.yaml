@@ -90,8 +90,8 @@ steps:
       - '-c'
       - |
           terraform apply -auto-approve
-# options:
-#   logging: CLOUD_LOGGING_ONLY  # Valid logging setting
+options:
+  logging: NONE  # Valid logging setting
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"

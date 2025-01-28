@@ -230,7 +230,6 @@
 
 
 steps:
-steps:
   - id: 'tf-plan'
     name: 'hashicorp/terraform:1.0.0'
     env:
@@ -243,6 +242,7 @@ steps:
 
 matrix:
   include:
-    - { _APPLICATION_DIRECTORY_CLOUD_BUCKET: 'cloud-bucket' }
+    - _APPLICATION_DIRECTORY_CLOUD_BUCKET: 'cloud-bucket'
+
 
 

@@ -233,7 +233,7 @@ steps:
   - id: 'tf-plan'
     name: 'hashicorp/terraform:1.0.0'
     env:
-      - dir: "${{ matrix._APPLICATION_DIRECTORY_CLOUD_BUCKET }}"
+      dir: "${{ matrix._APPLICATION_DIRECTORY_CLOUD_BUCKET }}"
     script:
       - |
         terraform init

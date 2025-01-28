@@ -5,7 +5,8 @@ steps:
     args:
       - '-c'
       - |
-        gcloud builds submit --config=tf-apply-template.yaml .
+        gcloud builds submit --config=tf-apply-template.yaml
+logging: CLOUD_LOGGING_ONLY
 
 substitutions: 
   _ORG_ROOT: "cicd"

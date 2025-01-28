@@ -131,10 +131,11 @@ steps:
   #       terraform apply -auto-approve
 
 substitutions:
-  # _APPLICATION_DIRECTORY: "bootstrap"
-  # _TF_IMAGE: "hashicorp/terraform:1.2.9"
+  _APPLICATION_DIRECTORY: "bootstrap"
+  _TF_IMAGE: "hashicorp/terraform:1.2.9"
+  
 
-  _APPLICATION_DIRECTORY: "bootstrap,cloud-bucket"
+  _APPLICATION_DIRECTORY: "cloud-bucket"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
 
     # - _APPLICATION_DIRECTORY: "bootstrap/prod"
@@ -151,5 +152,6 @@ substitutions:
 #   logging: CLOUD_LOGGING_ONLY
 
 logsBucket: 'gs://bkt-cb-log-bkt'
+waitFor: ['-']
 options:
  logging: GCS_ONLY

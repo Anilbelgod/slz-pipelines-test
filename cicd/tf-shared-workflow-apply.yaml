@@ -90,11 +90,11 @@ steps:
       - '-c'
       - |
           terraform apply -auto-approve
-options:
-  logging: CLOUD_LOGGING_ONLY  # Valid logging setting
+# options:
+#   logging: CLOUD_LOGGING_ONLY  # Valid logging setting
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
 
-timeout: "1200s"
+# timeout: "1200s"

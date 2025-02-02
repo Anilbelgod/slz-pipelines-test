@@ -1,29 +1,26 @@
 steps:
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  - name: 'hashicorp/terraform:1.6'
     id: 'Terraform Init'
-    entrypoint: 'bash'
-    dir: "bootstrap"
+    entrypoint: 'sh'
+    dir: "${_APPLICATION_DIRECTORY}"
     args:
       - '-c'
       - |
-          # Install Terraform
-          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-          sudo apt-add-repository "deb https://apt.releases.hashicorp.com stable main"
-          sudo apt-get update && sudo apt-get install terraform
-          terraform init
+          terraform init -backend-config="bucket=${_BUCKET_NAME}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
 
   - name: hashicorp/terraform:1.6
     id: 'Terraform Plan'
     entrypoint: 'sh'
-    dir: "bootstrap"
+    dir: "${_APPLICATION_DIRECTORY}"
     args:
       - '-c'
       - |
-         terraform plan
+         terraform plan -var-file="tfvars/variables.${_ENVIRONMENT}.tfvars"
+         
   - name: hashicorp/terraform:1.6
     id: 'Terraform Apply'
     entrypoint: 'sh'
-    dir: "bootstrap"
+    dir: "${_APPLICATION_DIRECTORY}"
     args:
       - '-c'
       - |
@@ -33,3 +30,9 @@ steps:
 logsBucket: 'gs://bkt-cb-log-bkt'
 options:
  logging: GCS_ONLY
+
+ substitutions:
+   _APPLICATION_DIRECTORY: "bootstrap"
+   _ENVIRONMENT: "shared"
+   _BUCKET_NAME: "bkt-cb-log-bkt"
+   

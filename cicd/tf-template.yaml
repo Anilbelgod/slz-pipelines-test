@@ -11,14 +11,42 @@
 #   logging: GCS_ONLY
 
 
+# id: terraform-deployments
+
+# steps:
+#   - uses: "cicd/tf-apply.yaml"
+#     with:
+#       application_directory: "bootstrap"
+#       environment: "shared"
+#       bucket_name: "bkt-cb-log-bkt"
+
+# substitutions:
+#   _APPLICATION_DIRECTORY: "bootstrap"
+#   _ENVIRONMENT: "shared"
+#   _BUCKET_NAME: "bkt-cb-log-bkt"
+
+# options:
+#   logging: GCS_ONLY
+
+
 id: terraform-deployments
 
 steps:
-  - uses: "cicd/tf-apply.yaml"
-    with:
-      application_directory: "bootstrap"
-      environment: "shared"
-      bucket_name: "bkt-cb-log-bkt"
+  - name: 'gcr.io/cloud-builders/terraform'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+          # Export the substitutions as environment variables
+          export APPLICATION_DIRECTORY=${_APPLICATION_DIRECTORY}
+          export ENVIRONMENT=${_ENVIRONMENT}
+          export BUCKET_NAME=${_BUCKET_NAME}
+
+          # Now run your terraform apply using the tf-apply.yaml file
+          terraform apply -var="application_directory=${APPLICATION_DIRECTORY}" \
+                          -var="environment=${ENVIRONMENT}" \
+                          -var="bucket_name=${BUCKET_NAME}" \
+                          cicd/tf-apply.yaml
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap"
@@ -27,5 +55,6 @@ substitutions:
 
 options:
   logging: GCS_ONLY
+
 
 

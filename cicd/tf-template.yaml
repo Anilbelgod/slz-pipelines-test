@@ -1,7 +1,7 @@
 id: terraform-deployments
 
 steps:
-  - template: tf-apply.yaml
+  - uses: tf-apply.yaml
 substitutions: 
     _APPLICATION_DIRECTORY: "bootstrap"
     _ENVIRONMENT: "shared"

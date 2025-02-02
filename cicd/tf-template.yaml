@@ -1,18 +1,12 @@
-[
-  {
-    "substitutions": {
-      "_WORKING_DIRECTORY": "4-secure-landing-zone",
-      "_ENVIRONMENT": "dev",
-      "_BU": "",
-      "_CHECKOV_SKIPS": "CKV_TF_1,CKV_GCP_118,CKV_GCP_44,CKV_GCP_49,CKV_GCP_117,CKV_GCP_116"
-    }
-  },
-  {
-    "substitutions": {
-      "_WORKING_DIRECTORY": "6-app-onboarding",
-      "_ENVIRONMENT": "dev",
-      "_BU": "",
-      "_CHECKOV_SKIPS": "CKV_TF_1,CKV_GCP_118,CKV_GCP_44,CKV_GCP_49,CKV_GCP_117,CKV_GCP_116"
-    }
-  }
-]
+id : terraform deployments
+
+stages:
+    - template: tf-apply.yaml
+    logsBucket: 'gs://bkt-cb-log-bkt'
+options:
+ logging: GCS_ONLY
+
+substitutions: 
+   _APPLICATION_DIRECTORY: "bootstrap"
+   _ENVIRONMENT: "shared"
+   _BUCKET_NAME: "bkt-cb-log-bkt"

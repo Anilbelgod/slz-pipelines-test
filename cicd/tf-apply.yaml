@@ -1,12 +1,16 @@
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'Terraform Init'
-    entrypoint: 'sh'
+    entrypoint: 'bash'
     dir: "bootstrap"
     args:
       - '-c'
       - |
-          terraform init
+          # Install Terraform
+         curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+         sudo apt-add-repository "deb https://apt.releases.hashicorp.com stable main"
+         sudo apt-get update && sudo apt-get install terraform
+         terraform init
 
   - name: hashicorp/terraform:1.6
     id: 'Terraform Plan'

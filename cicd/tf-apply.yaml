@@ -7,10 +7,10 @@ steps:
       - '-c'
       - |
           # Install Terraform
-         curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-         sudo apt-add-repository "deb https://apt.releases.hashicorp.com stable main"
-         sudo apt-get update && sudo apt-get install terraform
-         terraform init
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb https://apt.releases.hashicorp.com stable main"
+          sudo apt-get update && sudo apt-get install terraform
+          terraform init
 
   - name: hashicorp/terraform:1.6
     id: 'Terraform Plan'

@@ -26,6 +26,6 @@ steps:
          terraform apply
 
 
-  logsBucket: 'gs://bkt-cb-log-bkt'
+logsBucket: 'gs://bkt-cb-log-bkt'
 options:
  logging: GCS_ONLY

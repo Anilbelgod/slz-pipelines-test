@@ -1,7 +1,7 @@
 steps:
-  - name: hashicorp/terraform:1.6
+  - name: 'hashicorp/terraform:1.6.0-debian'
     id: 'Terraform Init'
-    entrypoint: 'sh'
+    entrypoint: 'bash'
     dir: "bootstrap"
     args:
       - '-c'

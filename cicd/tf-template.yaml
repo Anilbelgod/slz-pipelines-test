@@ -1,12 +1,13 @@
-id : terraform deployments
+id: terraform-deployments
 
 stages:
-    - template: tf-apply.yaml
-      logsBucket: 'gs://bkt-cb-log-bkt'
-      substitutions: 
-        _APPLICATION_DIRECTORY: "bootstrap"
-        _ENVIRONMENT: "shared"
-        _BUCKET_NAME: "bkt-cb-log-bkt"
+  - template: tf-apply.yaml
+    logsBucket: 'gs://bkt-cb-log-bkt'
+    substitutions: 
+      _APPLICATION_DIRECTORY: "bootstrap"
+      _ENVIRONMENT: "shared"
+      _BUCKET_NAME: "bkt-cb-log-bkt"
+
 options:
- logging: GCS_ONLY
+  logging: GCS_ONLY
 

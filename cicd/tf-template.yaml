@@ -43,16 +43,16 @@ steps:
           export BUCKET_NAME=${_BUCKET_NAME}
 
           # Now run your terraform apply using the tf-apply.yaml file
-          terraform apply -var="application_directory=${APPLICATION_DIRECTORY}" \
-                          -var="environment=${ENVIRONMENT}" \
-                          -var="bucket_name=${BUCKET_NAME}" \
+          terraform apply -var="application_directory=${_APPLICATION_DIRECTORY}" \
+                          -var="environment=${_ENVIRONMENT}" \
+                          -var="bucket_name=${_BUCKET_NAME}" \
                           cicd/tf-apply.yaml
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap"
   _ENVIRONMENT: "shared"
   _BUCKET_NAME: "bkt-cb-log-bkt"
-  
+
 logsBucket: 'gs://bkt-cb-log-bkt'
 options:
   logging: GCS_ONLY

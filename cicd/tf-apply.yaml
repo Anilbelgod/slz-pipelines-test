@@ -1,7 +1,7 @@
 steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'Terraform Init'
-    entrypoint: 'bash'
+    entrypoint: 'sh'
     dir: "bootstrap"
     args:
       - '-c'

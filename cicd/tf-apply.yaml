@@ -1,5 +1,5 @@
 steps:
-  - name: 'hashicorp/terraform:1.6.0-debian'
+  - name: 'gcr.io/cloud-builders/gcloud'
     id: 'Terraform Init'
     entrypoint: 'bash'
     dir: "bootstrap"

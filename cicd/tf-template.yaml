@@ -2,10 +2,10 @@ id: terraform-deployments
 
 steps:
   - template: tf-apply.yaml
-    substitutions: 
-      _APPLICATION_DIRECTORY: "bootstrap"
-      _ENVIRONMENT: "shared"
-      _BUCKET_NAME: "bkt-cb-log-bkt"
+substitutions: 
+    _APPLICATION_DIRECTORY: "bootstrap"
+    _ENVIRONMENT: "shared"
+    _BUCKET_NAME: "bkt-cb-log-bkt"
 logsBucket: 'gs://bkt-cb-log-bkt'
 options:
   logging: GCS_ONLY

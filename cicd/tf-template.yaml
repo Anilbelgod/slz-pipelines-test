@@ -1,6 +1,6 @@
 id: terraform-deployments
 
-stages:
+steps:
   - template: tf-apply.yaml
     logsBucket: 'gs://bkt-cb-log-bkt'
     substitutions: 

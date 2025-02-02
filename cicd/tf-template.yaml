@@ -32,7 +32,7 @@
 id: terraform-deployments
 
 steps:
-  - name: 'gcr.io/cloud-builders/terraform'
+  - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
       - '-c'

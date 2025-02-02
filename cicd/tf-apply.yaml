@@ -16,7 +16,7 @@ steps:
       - '-c'
       - |
          terraform plan -var-file="tfvars/variables.${_ENVIRONMENT}.tfvars"
-         
+
   - name: hashicorp/terraform:1.6
     id: 'Terraform Apply'
     entrypoint: 'sh'
@@ -31,7 +31,7 @@ logsBucket: 'gs://bkt-cb-log-bkt'
 options:
  logging: GCS_ONLY
 
- substitutions:
+substitutions: 
    _APPLICATION_DIRECTORY: "bootstrap"
    _ENVIRONMENT: "shared"
    _BUCKET_NAME: "bkt-cb-log-bkt"

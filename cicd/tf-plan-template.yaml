@@ -1,0 +1,28 @@
+ steps:
+  - id: 'tf init'
+    name: 'hashicorp/terraform:1.2.9'
+    entrypoint: 'sh'
+    dir: "${_APPLICATION_DIRECTORY}"
+    args:
+      - '-c'
+      - |
+
+        terraform init
+
+  - id: 'Terraform_Plan'
+    name: "hashicorp/terraform:1.2.9"
+    entrypoint: 'sh'
+    dir: "${_APPLICATION_DIRECTORY}"
+    args:
+      - '-c'
+      - |
+        terraform plan
+
+  - id: 'Terraform_Apply'
+    name: "${_TF_IMAGE}"
+    entrypoint: 'sh'
+    dir: "${_APPLICATION_DIRECTORY}"
+    args:
+      - '-c'
+      - |
+        terraform apply -auto-approve

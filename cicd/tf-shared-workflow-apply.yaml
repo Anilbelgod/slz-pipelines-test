@@ -261,40 +261,40 @@ substitutions:
 # options:
 #  logging: GCS_ONLY
 
-name: $(Date:yyyyMMdd)$(Rev:.r)
-lockBehavior: sequential
-trigger: none
+# name: $(Date:yyyyMMdd)$(Rev:.r)
+# lockBehavior: sequential
+# trigger: none
 
-resources:
-  repositories:
-    - repository: 'GCP Foundation Terraform'
-      name: 'GCP Foundation Terraform'
-      type: git
-      ref: main
+# resources:
+#   repositories:
+#     - repository: 'GCP Foundation Terraform'
+#       name: 'GCP Foundation Terraform'
+#       type: git
+#       ref: main
 
-parameters:
-  - name: environments
-    type: object
-    default:
-      - dir: '4-secure-landing-zone'
-        env: 'dev'
-        checkov_skips: 'CKV_TF_1,CKV_GCP_118,CKV_GCP_44,CKV_GCP_49,CKV_GCP_117,CKV_GCP_116'
-      - dir: '6-app-onboarding'
-        env: 'dev'
-        checkov_skips: 'CKV_TF_1,CKV_GCP_118,CKV_GCP_44,CKV_GCP_49,CKV_GCP_117,CKV_GCP_116'
-      # - dir: '12-example-infra-deploy'
-      #   env: 'dev'
-      #   checkov_skips: 'CKV_TF_1,CKV_GCP_118,CKV_GCP_44,CKV_GCP_49,CKV_GCP_117,CKV_GCP_116'
+# parameters:
+#   - name: environments
+#     type: object
+#     default:
+#       - dir: '4-secure-landing-zone'
+#         env: 'dev'
+#         checkov_skips: 'CKV_TF_1,CKV_GCP_118,CKV_GCP_44,CKV_GCP_49,CKV_GCP_117,CKV_GCP_116'
+#       - dir: '6-app-onboarding'
+#         env: 'dev'
+#         checkov_skips: 'CKV_TF_1,CKV_GCP_118,CKV_GCP_44,CKV_GCP_49,CKV_GCP_117,CKV_GCP_116'
+#       # - dir: '12-example-infra-deploy'
+#       #   env: 'dev'
+#       #   checkov_skips: 'CKV_TF_1,CKV_GCP_118,CKV_GCP_44,CKV_GCP_49,CKV_GCP_117,CKV_GCP_116'
 
-stages:
-  - ${{ each environment in parameters.environments }}:
-    - template: templates/tf-plan-multi-stage.yaml
-      parameters:
-        directory: ${{ environment.dir }}
-        environment: ${{ environment.env }}
-        workingDirectory: ${{ environment.dir }}
-        bu: ${{ environment.bu }}
-        checkov_skips: ${{ environment.checkov_skips }}
+# stages:
+#   - ${{ each environment in parameters.environments }}:
+#     - template: templates/tf-plan-multi-stage.yaml
+#       parameters:
+#         directory: ${{ environment.dir }}
+#         environment: ${{ environment.env }}
+#         workingDirectory: ${{ environment.dir }}
+#         bu: ${{ environment.bu }}
+#         checkov_skips: ${{ environment.checkov_skips }}
 
 
 

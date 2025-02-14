@@ -6,8 +6,9 @@ steps:
       - '-c'
       - |
         gcloud builds submit --config=cicd/tf-apply.yaml
+logsBucket: 'gs://bkt-cb-log-bkt'
 options:
-  logging: CLOUD_LOGGING_ONLY  # Valid logging setting
+ logging: GCS_ONLY # Valid logging setting
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"

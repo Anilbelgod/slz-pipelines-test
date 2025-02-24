@@ -8,6 +8,18 @@ steps:
       - |
          terraform init -backend-config="bucket=bkt-cb-log-bkt" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
 
+  - id: 'Checkov'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+          echo "Installing Checkov"
+          pip install checkov
+          echo "Running Checkov scan"
+          checkov -d $_APPLICATION_DIRECTORY --framework terraform --download-external-modules false 
+
   - id: 'Terraform format'
     name: $_TF_IMAGE
     entrypoint: 'sh'

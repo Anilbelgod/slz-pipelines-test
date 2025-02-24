@@ -1,17 +1,15 @@
 steps:
   - id: 'TF Init'
     name: $_TF_IMAGE
-    entrypoint: 'bash'
+    entrypoint: 'sh'
     dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
-        
-        
          terraform init 
   - id: 'Terraform format'
     name: $_TF_IMAGE
-    entrypoint: 'bash'
+    entrypoint: 'sh'
     dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
@@ -21,7 +19,7 @@ steps:
 
   - id: 'Terraform Validate'
     name: $_TF_IMAGE
-    entrypoint: 'bash'
+    entrypoint: 'sh'
     dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
@@ -31,7 +29,7 @@ steps:
 
   - id: 'Terraform Plan'
     name: $_TF_IMAGE
-    entrypoint: 'bash'
+    entrypoint: 'sh'
     dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'

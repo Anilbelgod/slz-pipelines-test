@@ -8,8 +8,7 @@ steps:
       - |
         
         
-         terraform init -backend-config="bucket=$_GCS_BUCKET" -backend-config="prefix=$TF_BACKEND_PREFIX"
-
+         terraform init 
   - id: 'Terraform format'
     name: $_TF_IMAGE
     entrypoint: 'bash'

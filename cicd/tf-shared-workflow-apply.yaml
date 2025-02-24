@@ -12,7 +12,7 @@ steps:
           WORKING_DIR="$_APPLICATION_DIRECTORY/$_PLATFORM"
         fi
         cd $WORKING_DIR
-        echo "Working Directory: $PWD"if any command within the script returns a non-zero exit status. This helps to ensure that errors are caught early and the script does not continue executing with unexpected results.
+        echo "Working Directory: $PWD"
         echo "Terraform Version: $(terraform version)"
         
         # Backend setup
@@ -37,7 +37,6 @@ steps:
         set -e
         terraform fmt
 
-
   - id: 'Terraform Validate'
     name: $_TF_IMAGE
     entrypoint: 'sh'
@@ -47,7 +46,6 @@ steps:
       - |
         set -e
         terraform validate -no-color
-
 
   - id: 'Terraform Plan'
     name: $_TF_IMAGE
@@ -72,7 +70,6 @@ steps:
 logsBucket: 'gs://bkt-cb-log-bkt'
 options:
   logging: GCS_ONLY
-
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"

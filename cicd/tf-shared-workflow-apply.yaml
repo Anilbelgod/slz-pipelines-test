@@ -15,7 +15,6 @@ steps:
     args:
       - '-c'
       - |
-         set -e
          terraform fmt
 
   - id: 'Terraform Validate'
@@ -25,7 +24,6 @@ steps:
     args:
       - '-c'
       - |
-         set -e
          terraform validate -no-color
 
   - id: 'Terraform Plan'
@@ -39,7 +37,6 @@ steps:
   
          terraform plan -var-file="tfvars/variables.$_ENVIRONMENT.tfvars" -out=tf.plan
          echo "Terraform plan created successfully."
-         terraform show -json tf.plan | jq '.' > tfvars/plan.json
 
 
 logsBucket: 'gs://bkt-cb-log-bkt'

@@ -6,7 +6,7 @@ steps:
     args:
       - '-c'
       - |
-         terraform init 
+         terraform init -backend-prefix="$_APPLICATION_DIRECTORY/$_ENVIRONMENT"
   - id: 'Terraform format'
     name: $_TF_IMAGE
     entrypoint: 'sh'

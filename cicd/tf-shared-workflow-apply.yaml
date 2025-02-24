@@ -6,10 +6,10 @@ steps:
       - '-c'
       - |
         # Determine the working directory
-        if [[ -z "$PLATFORM" ]]; then
+        if [[ -z "$_PLATFORM" ]]; then
           WORKING_DIR="$_APPLICATION_DIRECTORY"
         else
-          WORKING_DIR="$_APPLICATION_DIRECTORY/$PLATFORM"
+          WORKING_DIR="$_APPLICATION_DIRECTORY/$_PLATFORM"
         fi
         cd $WORKING_DIR
         echo "Working Directory: $PWD"if any command within the script returns a non-zero exit status. This helps to ensure that errors are caught early and the script does not continue executing with unexpected results.
@@ -19,7 +19,7 @@ steps:
         if [[ -z "$PLATFORM" ]]; then
           TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$_ENVIRONMENT"
         else
-          TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$PLATFORM/$_ENVIRONMENT"
+          TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$_PLATFORM/$_ENVIRONMENT"
         fi
         
         echo "Backend Bucket: $_GCS_BUCKET"
@@ -61,7 +61,7 @@ steps:
         if [[ -z "$PLATFORM" ]]; then
           WORKING_DIR="$_APPLICATION_DIRECTORY"
         else
-          WORKING_DIR="$_APPLICATION_DIRECTORY/$PLATFORM"
+          WORKING_DIR="$_APPLICATION_DIRECTORY/$_PLATFORM"
         fi
         cd $WORKING_DIR
   
@@ -77,6 +77,7 @@ options:
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
+
 
 
 

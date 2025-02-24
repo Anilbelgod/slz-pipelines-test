@@ -57,7 +57,7 @@ options:
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"
-  _TF_IMAGE: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  _TF_IMAGE: "hashicorp/terraform:1.2.9"
   _ENVIRONMENT: "shared"
 
 

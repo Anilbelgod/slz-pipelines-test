@@ -1,3 +1,4 @@
+steps:
 - id: 'TF Init'
     name: $_TF_IMAGE
     entrypoint: 'sh'

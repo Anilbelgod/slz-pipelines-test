@@ -16,7 +16,7 @@ steps:
         echo "Terraform Version: $(terraform version)"
         
         # Backend setup
-        if [[ -z "$PLATFORM" ]]; then
+        if [[ -z "$_PLATFORM" ]]; then
           TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$_ENVIRONMENT"
         else
           TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$_PLATFORM/$_ENVIRONMENT"
@@ -58,7 +58,7 @@ steps:
         set -e
         apk add --no-cache jq
         # Determine the working directory
-        if [[ -z "$PLATFORM" ]]; then
+        if [[ -z "$_PLATFORM" ]]; then
           WORKING_DIR="$_APPLICATION_DIRECTORY"
         else
           WORKING_DIR="$_APPLICATION_DIRECTORY/$_PLATFORM"

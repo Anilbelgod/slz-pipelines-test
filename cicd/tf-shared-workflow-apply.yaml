@@ -7,8 +7,7 @@ steps:
       - '-c'
       - |
          terraform init -backend-config="bucket=bkt-cb-log-bkt" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
-
-  steps:
+steps:
   - id: 'Checkov'
     name: 'python:3.10'  # Use a Python image
     entrypoint: 'sh'

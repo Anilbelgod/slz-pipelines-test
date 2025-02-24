@@ -1,72 +1,64 @@
-steps:
-  - id: 'Terraform init'
-    name: "hashicorp/terraform:1.2.9"
+- id: 'TF Init'
+    name: $_TF_IMAGE
     entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
-        # Determine the working directory
-        if [[ -z "$_PLATFORM" ]]; then
-          WORKING_DIR="$_APPLICATION_DIRECTORY"
-        else
-          WORKING_DIR="$_APPLICATION_DIRECTORY/$_PLATFORM"
-        fi
-        cd $WORKING_DIR
-        echo "Working Directory: $PWD"
-        echo "Terraform Version: $(terraform version)"
         
-        # Backend setup
-        if [[ -z "$_PLATFORM" ]]; then
-          TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$_ENVIRONMENT"
-        else
+         # Backend setup
+         if [[ -z "$_PLATFORM" ]]; then
+           TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$_ENVIRONMENT"
+         else
           TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$_PLATFORM/$_ENVIRONMENT"
-        fi
+         fi
         
-        echo "Backend Bucket: $_GCS_BUCKET"
-        echo "Backend Prefix: $TF_BACKEND_PREFIX"
+         echo "Backend Bucket: $_GCS_BUCKET"
+         echo "Backend Prefix: $TF_BACKEND_PREFIX"
         
-        terraform init -backend-config="bucket=$_GCS_BUCKET" -backend-config="prefix=$TF_BACKEND_PREFIX"
+         terraform init -backend-config="bucket=$_GCS_BUCKET" -backend-config="prefix=$TF_BACKEND_PREFIX"
 
   - id: 'Terraform format'
     name: $_TF_IMAGE
     entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
-        set -e
-        terraform fmt
-    dir: $_APPLICATION_DIRECTORY
+         set -e
+         terraform fmt
 
   - id: 'Terraform Validate'
     name: $_TF_IMAGE
     entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
-        set -e
-        terraform validate -no-color
-    dir: $_APPLICATION_DIRECTORY
+         set -e
+         terraform validate -no-color
 
   - id: 'Terraform Plan'
     name: $_TF_IMAGE
     entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
-        set -e
-        apk add --no-cache jq
-        # Determine the working directory
-        if [[ -z "$_PLATFORM" ]]; then
-          WORKING_DIR="$_APPLICATION_DIRECTORY"
-        else
-          WORKING_DIR="$_APPLICATION_DIRECTORY/$_PLATFORM"
-        fi
-        cd $WORKING_DIR
+         set -e
+         apk add --no-cache jq
+         # Determine the working directory
+         if [[ -z "$_PLATFORM" ]]; then
+           WORKING_DIR="$_APPLICATION_DIRECTORY"
+         else
+           WORKING_DIR="$_APPLICATION_DIRECTORY/$_PLATFORM"
+         fi
+         cd $WORKING_DIR
   
-        terraform plan -var-file="tfvars/variables.$_ENVIRONMENT.tfvars" -out=tf.plan
-        echo "Terraform plan created successfully."
-        terraform show -json tf.plan | jq '.' > tfvars/plan.json
-    dir: $_APPLICATION_DIRECTORY
+         terraform plan -var-file="tfvars/variables.$_ENVIRONMENT.tfvars" -out=tf.plan
+         echo "Terraform plan created successfully."
+         terraform show -json tf.plan | jq '.' > tfvars/plan.json
+
 
 logsBucket: 'gs://bkt-cb-log-bkt'
 options:

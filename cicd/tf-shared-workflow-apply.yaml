@@ -6,7 +6,8 @@ steps:
     args:
       - '-c'
       - |
-         terraform init -backend-prefix="$_APPLICATION_DIRECTORY/$_ENVIRONMENT"
+         terraform init -backend-config="bucket=bkt-cb-log-bkt" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
+
   - id: 'Terraform format'
     name: $_TF_IMAGE
     entrypoint: 'sh'
@@ -49,6 +50,7 @@ substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
   _ENVIRONMENT: "shared"
+
 
 
 

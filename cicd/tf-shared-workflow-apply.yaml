@@ -9,7 +9,7 @@ steps:
          terraform init -backend-config="bucket=bkt-cb-log-bkt" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
 
   - id: 'Checkov'
-    name: 'python:3.10'  # Use a Python image
+    name: 'python:3.10' 
     entrypoint: 'sh'
     dir: '$_APPLICATION_DIRECTORY'
     args:
@@ -57,7 +57,7 @@ options:
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"
-  _TF_IMAGE: "hashicorp/terraform:1.2.9"
+  _TF_IMAGE: "gcr.io/google.com/cloudsdktool/cloud-sdk"
   _ENVIRONMENT: "shared"
 
 

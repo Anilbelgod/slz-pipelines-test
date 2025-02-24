@@ -1,14 +1,90 @@
-name: tf-prod-workflow-apply
 steps:
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
+  - id: 'Terraform init'
+    name: "hashicorp/terraform:1.2.9"
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
-        gcloud builds submit --config=cicd/tf-apply.yaml
+        # Determine the working directory
+        if [[ -z "$PLATFORM" ]]; then
+          WORKING_DIR="$_APPLICATION_DIRECTORY"
+        else
+          WORKING_DIR="$_APPLICATION_DIRECTORY/$PLATFORM"
+        fi
+        cd $WORKING_DIR
+        echo "Working Directory: $PWD"if any command within the script returns a non-zero exit status. This helps to ensure that errors are caught early and the script does not continue executing with unexpected results.
+        echo "Terraform Version: $(terraform version)"
+        
+        # Backend setup
+        if [[ -z "$PLATFORM" ]]; then
+          TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$_ENVIRONMENT"
+        else
+          TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$PLATFORM/$_ENVIRONMENT"
+        fi
+        
+        echo "Backend Bucket: $_GCS_BUCKET"
+        echo "Backend Prefix: $TF_BACKEND_PREFIX"
+        
+        terraform init -backend-config="bucket=$_GCS_BUCKET" -backend-config="prefix=$TF_BACKEND_PREFIX"
+
+  - id: 'Terraform format'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+        set -e
+        terraform fmt
+
+
+  - id: 'Terraform Validate'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+        set -e
+        terraform validate -no-color
+
+
+  - id: 'Terraform Plan'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+        set -e
+        apk add --no-cache jq
+        # Determine the working directory
+        if [[ -z "$PLATFORM" ]]; then
+          WORKING_DIR="$_APPLICATION_DIRECTORY"
+        else
+          WORKING_DIR="$_APPLICATION_DIRECTORY/$PLATFORM"
+        fi
+        cd $WORKING_DIR
+  
+        terraform plan -var-file="tfvars/variables.$_ENVIRONMENT.tfvars" -out=tf.plan
+        echo "Terraform plan created successfully."
+        terraform show -json tf.plan | jq '.' > tfvars/plan.json
+
+  - id: 'Terraform Apply'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+        set -e
+        terraform apply -auto-approve tf.plan
+
 logsBucket: 'gs://bkt-cb-log-bkt'
 options:
- logging: GCS_ONLY # Valid logging setting
+  logging: GCS_ONLY
+
 
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"

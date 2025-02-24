@@ -1,5 +1,5 @@
 steps:
-- id: 'TF Init'
+  - id: 'TF Init'
     name: $_TF_IMAGE
     entrypoint: 'sh'
     dir: $_APPLICATION_DIRECTORY

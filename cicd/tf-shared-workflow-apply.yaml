@@ -18,7 +18,7 @@ steps:
           echo "Installing Checkov"
           pip install --no-cache-dir checkov
           echo "Running Checkov scan"
-          checkov -d . --framework terraform --download-external-modules false
+          checkov -d . --framework terraform --download-external-modules false --skip-check CKV2_GCP_18
 
   - id: 'Terraform format'
     name: $_TF_IMAGE

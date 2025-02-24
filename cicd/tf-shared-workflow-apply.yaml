@@ -7,7 +7,7 @@ steps:
       - '-c'
       - |
          terraform init -backend-config="bucket=bkt-cb-log-bkt" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
-steps:
+
   - id: 'Checkov'
     name: 'python:3.10'  # Use a Python image
     entrypoint: 'sh'
@@ -20,23 +20,23 @@ steps:
           echo "Running Checkov scan"
           checkov -d . --framework terraform --download-external-modules false --skip-check CKV2_GCP_18
 
-  # - id: 'Terraform format'
-  #   name: $_TF_IMAGE
-  #   entrypoint: 'sh'
-  #   dir: $_APPLICATION_DIRECTORY
-  #   args:
-  #     - '-c'
-  #     - |
-  #        terraform fmt
+  - id: 'Terraform format'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+         terraform fmt
 
-  # - id: 'Terraform Validate'
-  #   name: $_TF_IMAGE
-  #   entrypoint: 'sh'
-  #   dir: $_APPLICATION_DIRECTORY
-  #   args:
-  #     - '-c'
-  #     - |
-  #        terraform validate -no-color
+  - id: 'Terraform Validate'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+         terraform validate -no-color
 
   - id: 'Terraform Plan'
     name: $_TF_IMAGE

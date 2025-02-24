@@ -7,15 +7,6 @@ steps:
       - '-c'
       - |
         
-         # Backend setup
-         if [[ -z "$_PLATFORM" ]]; then
-           TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$_ENVIRONMENT"
-         else
-          TF_BACKEND_PREFIX="$_APPLICATION_DIRECTORY/$_PLATFORM/$_ENVIRONMENT"
-         fi
-        
-         echo "Backend Bucket: $_GCS_BUCKET"
-         echo "Backend Prefix: $TF_BACKEND_PREFIX"
         
          terraform init -backend-config="bucket=$_GCS_BUCKET" -backend-config="prefix=$TF_BACKEND_PREFIX"
 
@@ -46,15 +37,7 @@ steps:
     args:
       - '-c'
       - |
-         set -e
-         apk add --no-cache jq
-         # Determine the working directory
-         if [[ -z "$_PLATFORM" ]]; then
-           WORKING_DIR="$_APPLICATION_DIRECTORY"
-         else
-           WORKING_DIR="$_APPLICATION_DIRECTORY/$_PLATFORM"
-         fi
-         cd $WORKING_DIR
+
   
          terraform plan -var-file="tfvars/variables.$_ENVIRONMENT.tfvars" -out=tf.plan
          echo "Terraform plan created successfully."
@@ -68,7 +51,7 @@ options:
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
-
+  _ENVIRONMENT: "shared"
 
 
 

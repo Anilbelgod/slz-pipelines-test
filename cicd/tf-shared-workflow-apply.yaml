@@ -2,7 +2,6 @@ steps:
   - id: 'Terraform init'
     name: "hashicorp/terraform:1.2.9"
     entrypoint: 'sh'
-    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
@@ -53,7 +52,6 @@ steps:
   - id: 'Terraform Plan'
     name: $_TF_IMAGE
     entrypoint: 'sh'
-    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
@@ -71,16 +69,6 @@ steps:
         echo "Terraform plan created successfully."
         terraform show -json tf.plan | jq '.' > tfvars/plan.json
 
-  - id: 'Terraform Apply'
-    name: $_TF_IMAGE
-    entrypoint: 'sh'
-    dir: $_APPLICATION_DIRECTORY
-    args:
-      - '-c'
-      - |
-        set -e
-        terraform apply -auto-approve tf.plan
-
 logsBucket: 'gs://bkt-cb-log-bkt'
 options:
   logging: GCS_ONLY
@@ -89,7 +77,6 @@ options:
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
-
 
 
 

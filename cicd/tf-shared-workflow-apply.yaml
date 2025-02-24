@@ -30,22 +30,22 @@ steps:
   - id: 'Terraform format'
     name: $_TF_IMAGE
     entrypoint: 'sh'
-    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
         set -e
         terraform fmt
+    dir: $_APPLICATION_DIRECTORY
 
   - id: 'Terraform Validate'
     name: $_TF_IMAGE
     entrypoint: 'sh'
-    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
         set -e
         terraform validate -no-color
+    dir: $_APPLICATION_DIRECTORY
 
   - id: 'Terraform Plan'
     name: $_TF_IMAGE
@@ -66,6 +66,7 @@ steps:
         terraform plan -var-file="tfvars/variables.$_ENVIRONMENT.tfvars" -out=tf.plan
         echo "Terraform plan created successfully."
         terraform show -json tf.plan | jq '.' > tfvars/plan.json
+    dir: $_APPLICATION_DIRECTORY
 
 logsBucket: 'gs://bkt-cb-log-bkt'
 options:
@@ -74,6 +75,7 @@ options:
 substitutions:
   _APPLICATION_DIRECTORY: "bootstrap/"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
+
 
 
 

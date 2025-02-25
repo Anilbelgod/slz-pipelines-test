@@ -162,7 +162,6 @@ steps:
     name: 'gcr.io/cloud-builders/gsutil'
     dir: $_APPLICATION_DIRECTORY
     args:
-      - cd $_PLATFORM
       - 'cp'
       - '$_APPLICATION_DIRECTORY/tf.plan'
       - 'gs://$_GCS_BUCKET/tf.plan'

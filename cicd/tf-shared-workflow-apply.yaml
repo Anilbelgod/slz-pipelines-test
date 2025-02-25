@@ -40,7 +40,7 @@ steps:
     args:
       - '-c'
       - |
-         terraform fmt
+         terraform fmt -recursive	
 
   - id: 'Terraform Validate'
     name: $_TF_IMAGE

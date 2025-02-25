@@ -23,6 +23,7 @@ steps:
            terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"  
          else
            cd $_PLATFORM
+           echo "Working directory: $(pwd)"
            terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/$_PLATFORM/${_ENVIRONMENT}"  
          fi
 

@@ -1,12 +1,14 @@
 steps:
   - id: 'Check Branch'
-    name: 'gcr.io/cloud-builders/gcloud'
+    name: 'gcr.io/cloud-builders/git'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-          if [[ "$BRANCH_NAME" != main ]]; then
-            echo "Not a feature branch, skipping build."
+          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+          echo "Current branch: $BRANCH_NAME"
+          if [[ "$BRANCH_NAME" != "main" ]]; then
+            echo "Not the main branch, skipping build."
             exit 0
           fi
 

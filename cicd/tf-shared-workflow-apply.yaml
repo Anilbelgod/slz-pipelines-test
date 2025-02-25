@@ -7,7 +7,7 @@ steps:
       - |
           BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
           echo "Current branch: $BRANCH_NAME"
-          if [[ "$BRANCH_NAME" != "feature/**" ]]; then
+          if [[ "$BRANCH_NAME" != feature/* ]]; then
             echo "Not the main branch, skipping build."
             exit 1
           fi

@@ -153,7 +153,7 @@ steps:
          else
            cd $_PLATFORM
            echo "Working directory: $(pwd)"
-           terraform plan -var-file="../tfvars/variables.$_ENVIRONMENT.tfvars" -out=tf.plan
+           terraform plan -var-file="tfvars/variables.$_ENVIRONMENT.tfvars" -out=tf.plan
          fi
          echo "Terraform plan created successfully."
 

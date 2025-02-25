@@ -158,38 +158,38 @@ steps:
          echo "Terraform plan created successfully."
 
 
-#   - id: 'Save Plan to GCS'
-#     name: 'gcr.io/cloud-builders/gsutil'
-#     args:
-#       - 'cp'
-#       - '$_APPLICATION_DIRECTORY/tf.plan'
-#       - 'gs://$_GCS_BUCKET/tf.plan'
+  - id: 'Save Plan to GCS'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args:
+      - 'cp'
+      - '$_APPLICATION_DIRECTORY/tf.plan'
+      - 'gs://$_GCS_BUCKET/tf.plan'
 
-#   - id: 'Wait for Approval'
-#     name: 'gcr.io/cloud-builders/gcloud'
-#     args: 
-#       - 'beta'
-#       - 'builds'
-#       - 'approvals'
-#       - 'wait'
-#       - '$BUILD_ID'
+  - id: 'Wait for Approval'
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: 
+      - 'beta'
+      - 'builds'
+      - 'approvals'
+      - 'wait'
+      - '$BUILD_ID'
 
-#   - id: 'Download Plan from GCS'
-#     name: 'gcr.io/cloud-builders/gsutil'
-#     args:
-#       - 'cp'
-#       - 'gs://$_GCS_BUCKET/tf.plan'
-#       - '$_APPLICATION_DIRECTORY/tf.plan'
+  - id: 'Download Plan from GCS'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args:
+      - 'cp'
+      - 'gs://$_GCS_BUCKET/tf.plan'
+      - '$_APPLICATION_DIRECTORY/tf.plan'
 
-#   - id: 'Terraform Apply'
-#     name: $_TF_IMAGE
-#     entrypoint: 'sh'
-#     dir: $_APPLICATION_DIRECTORY
-#     args:
-#       - '-c'
-#       - |
-#          terraform apply -auto-approve tf.plan
-#          echo "Terraform apply completed successfully."
+  - id: 'Terraform Apply'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+         terraform apply -auto-approve tf.plan
+         echo "Terraform apply completed successfully."
 
 logsBucket: 'gs://bkt-cb-log-bkt'
 options:

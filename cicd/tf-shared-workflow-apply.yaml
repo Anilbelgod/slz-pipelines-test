@@ -19,7 +19,7 @@ steps:
     args:
       - '-c'
       - |
-         echo dir: $dir
+         echo dir: $ {{ dir }}
          terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
 
   - id: 'Checkov'

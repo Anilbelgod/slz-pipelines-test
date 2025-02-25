@@ -5,7 +5,7 @@ steps:
     args:
       - '-c'
       - |
-          if [[ "$BRANCH_NAME" != feature/* ]]; then
+          if [[ "$BRANCH_NAME" != main ]]; then
             echo "Not a feature branch, skipping build."
             exit 0
           fi

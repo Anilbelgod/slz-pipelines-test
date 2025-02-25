@@ -1,31 +1,112 @@
 steps:
-  - name: 'hashicorp/terraform:1.6'
-    id: 'Terraform Init'
-    entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY}"
+  - id: 'Check Branch'
+    name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
     args:
       - '-c'
       - |
-          terraform init -backend-config="bucket=${_BUCKET_NAME}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
+          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+          echo "Current branch: $BRANCH_NAME"
+          if [[ "$BRANCH_NAME" != feature/* ]]; then
+            echo "Not the main branch, skipping build."
+            exit 1
+          fi
 
-  - name: hashicorp/terraform:1.6
-    id: 'Terraform Plan'
+  - id: 'TF Init'
+    name: $_TF_IMAGE
     entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY}"
+    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
-         terraform plan -var-file="tfvars/variables.${_ENVIRONMENT}.tfvars"
+         if [[ -z "$_PLATFORM" ]]; then
+           terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"  
+         else
+           cd $_PLATFORM
+           echo "Working directory: $(pwd)"
+           terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/$_PLATFORM/${_ENVIRONMENT}"  
+         fi
 
-  - name: hashicorp/terraform:1.6
-    id: 'Terraform Apply'
+  - id: 'Checkov'
+    name: 'python:3.10' 
     entrypoint: 'sh'
-    dir: "${_APPLICATION_DIRECTORY}"
+    dir: '$_APPLICATION_DIRECTORY'
     args:
       - '-c'
       - |
-         terraform apply
+          echo "Installing Checkov"
+          pip install --no-cache-dir checkov
+          echo "Running Checkov scan"
+          checkov -d . --framework terraform --download-external-modules false --skip-check ${_CHECKOV_SKIP_CHECKS}
 
+  - id: 'Terraform format'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+         terraform fmt -recursive	
 
+  - id: 'Terraform Validate'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+         terraform validate -no-color
 
-   
+  - id: 'Terraform Plan'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+         terraform plan -var-file="tfvars/variables.$_ENVIRONMENT.tfvars" -out=tf.plan
+         echo "Terraform plan created successfully."
+
+  - id: 'Save Plan to GCS'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args:
+      - 'cp'
+      - '$_APPLICATION_DIRECTORY/tf.plan'
+      - 'gs://$_GCS_BUCKET/tf.plan'
+
+  - id: 'Wait for Approval'
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: 
+      - 'beta'
+      - 'builds'
+      - 'approvals'
+      - 'wait'
+      - '$BUILD_ID'
+
+  - id: 'Download Plan from GCS'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args:
+      - 'cp'
+      - 'gs://$_GCS_BUCKET/tf.plan'
+      - '$_APPLICATION_DIRECTORY/tf.plan'
+
+  - id: 'Terraform Apply'
+    name: $_TF_IMAGE
+    entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
+    args:
+      - '-c'
+      - |
+         terraform apply -auto-approve tf.plan
+         echo "Terraform apply completed successfully."
+
+logsBucket: 'gs://bkt-cb-log-bkt'
+options:
+  logging: GCS_ONLY
+
+substitutions:
+  _APPLICATION_DIRECTORY: "bootstrap"
+  _TF_IMAGE: "hashicorp/terraform:1.2.9"
+  _ENVIRONMENT: "shared"
+  _GCS_BUCKET: "bkt-cb-log-bkt"
+  _CHECKOV_SKIP_CHECKS: ""

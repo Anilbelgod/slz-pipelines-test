@@ -15,10 +15,14 @@ steps:
   - id: 'TF Init'
     name: $_TF_IMAGE
     entrypoint: 'sh'
-    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
+         if [[ -z "$_PLATFORM" ]]; then
+           dir="$_APPLICATION_DIRECTORY"
+         else
+           dir="$_APPLICATION_DIRECTORY/$_PLATFORM"
+         fi
          terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
 
   - id: 'Checkov'
@@ -31,7 +35,7 @@ steps:
           echo "Installing Checkov"
           pip install --no-cache-dir checkov
           echo "Running Checkov scan"
-          checkov -d . --framework terraform --download-external-modules false --skip-check CKV2_GCP_18
+          checkov -d . --framework terraform --download-external-modules false --skip-check ${_CHECKOV_SKIP_CHECKS}
 
   - id: 'Terraform format'
     name: $_TF_IMAGE
@@ -70,3 +74,4 @@ substitutions:
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
   _ENVIRONMENT: "shared"
   _GCS_BUCKET: "bkt-cb-log-bkt"
+  _CHECKOV_SKIP_CHECKS: ""

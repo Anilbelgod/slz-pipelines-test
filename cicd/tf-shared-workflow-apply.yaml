@@ -15,11 +15,10 @@ steps:
   - id: 'TF Init'
     name: $_TF_IMAGE
     entrypoint: 'sh'
-    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
-         echo dir: $ {{ dir }}
+         dir: $_APPLICATION_DIRECTORY
          terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
 
   - id: 'Checkov'

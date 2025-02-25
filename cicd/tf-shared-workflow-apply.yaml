@@ -160,6 +160,7 @@ steps:
 
   - id: 'Save Plan to GCS'
     name: 'gcr.io/cloud-builders/gsutil'
+    dir: $_APPLICATION_DIRECTORY
     args:
       - cd $_PLATFORM
       - 'cp'

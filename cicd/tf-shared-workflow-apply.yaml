@@ -161,6 +161,7 @@ steps:
   - id: 'Save Plan to GCS'
     name: 'gcr.io/cloud-builders/gsutil'
     args:
+      - cd $_PLATFORM
       - 'cp'
       - '$_APPLICATION_DIRECTORY/tf.plan'
       - 'gs://$_GCS_BUCKET/tf.plan'

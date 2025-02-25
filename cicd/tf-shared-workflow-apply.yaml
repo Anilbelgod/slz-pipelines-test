@@ -22,9 +22,9 @@ steps:
          if [[ -z "$_PLATFORM" ]]; then
            terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"  
          else
-           (cd $_APPLICATION_DIRECTORY/$_PLATFORM && terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/$_PLATFORM/${_ENVIRONMENT}")
+           cd $_PLATFORM
+           terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/$_PLATFORM/${_ENVIRONMENT}"  
          fi
-
 
          
 

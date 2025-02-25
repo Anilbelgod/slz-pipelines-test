@@ -79,4 +79,3 @@ substitutions:
   _ENVIRONMENT: "shared"
   _GCS_BUCKET: "bkt-cb-log-bkt"
   _CHECKOV_SKIP_CHECKS: ""
-  _PLATFORM: "iam/"

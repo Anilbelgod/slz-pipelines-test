@@ -9,7 +9,7 @@ steps:
           echo "Current branch: $BRANCH_NAME"
           if [[ "$BRANCH_NAME" != "main" ]]; then
             echo "Not the main branch, skipping build."
-            exit 0
+            exit 1
           fi
 
   - id: 'TF Init'

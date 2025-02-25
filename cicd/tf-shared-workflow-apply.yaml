@@ -73,7 +73,7 @@ options:
   logging: GCS_ONLY
 
 substitutions:
-  _APPLICATION_DIRECTORY: "bootstrap/"
+  _APPLICATION_DIRECTORY: "bootstrap"
   _TF_IMAGE: "hashicorp/terraform:1.2.9"
   _ENVIRONMENT: "shared"
   _GCS_BUCKET: "bkt-cb-log-bkt"

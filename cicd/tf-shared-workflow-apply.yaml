@@ -15,11 +15,18 @@ steps:
   - id: 'TF Init'
     name: $_TF_IMAGE
     entrypoint: 'sh'
+    dir: $_APPLICATION_DIRECTORY
     args:
       - '-c'
       - |
-         dir: $_APPLICATION_DIRECTORY
-         terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"
+         if [[ -z "$_PLATFORM" ]]; then
+           terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/${_ENVIRONMENT}"  
+         else
+          cd $_APPLICATION_DIRECTORY/$_PLATFORM
+          terraform init -backend-config="bucket=${_GCS_BUCKET}" -backend-config="prefix=${_APPLICATION_DIRECTORY}/$_PLATFORM/${_ENVIRONMENT}"  
+        fi
+
+         
 
   - id: 'Checkov'
     name: 'python:3.10' 
